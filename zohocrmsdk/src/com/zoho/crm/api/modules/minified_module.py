@@ -14,6 +14,7 @@ class MinifiedModule(object):
 		self.__id = None
 		self.__module_name = None
 		self.__module = None
+		self.__crypt = None
 		self.__key_modified = dict()
 
 	def get_api_name(self):
@@ -111,6 +112,30 @@ class MinifiedModule(object):
 		
 		self.__module = module
 		self.__key_modified['module'] = 1
+
+	def get_crypt(self):
+		"""
+		The method to get the crypt
+
+		Returns:
+			bool: A bool representing the crypt
+		"""
+
+		return self.__crypt
+
+	def set_crypt(self, crypt):
+		"""
+		The method to set the value to crypt
+
+		Parameters:
+			crypt (bool) : A bool representing the crypt
+		"""
+
+		if crypt is not None and not isinstance(crypt, bool):
+			raise SDKException(Constants.DATA_TYPE_ERROR, 'KEY: crypt EXPECTED TYPE: bool', None, None)
+		
+		self.__crypt = crypt
+		self.__key_modified['crypt'] = 1
 
 	def is_key_modified(self, key):
 		"""

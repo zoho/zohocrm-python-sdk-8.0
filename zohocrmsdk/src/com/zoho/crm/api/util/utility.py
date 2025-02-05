@@ -729,6 +729,9 @@ class Utility(object):
                     module.set_id(linking_module.get_id())
             field_detail[Constants.SUBFORM] = True
 
+        if Constants.MULTI_MODULE_LOOKUP in api_type.lower():
+            field_detail[Constants.SKIP_MANDATORY] = True
+
         if api_type in Utility.apitype_vs_structurename:
             field_detail[Constants.STRUCTURE_NAME] = Utility.apitype_vs_structurename.get(api_type)
 
@@ -750,7 +753,7 @@ class Utility(object):
             if module1 is not None and not module1.get_api_name() == Constants.SE_MODULE:
                 module.set_api_name(module1.get_api_name())
                 module.set_id(module1.get_id())
-                field_detail[Constants.MODULE] = module.get_api_name()
+                field_detail[Constants.MODULE] = module1.get_api_name()
                 if module1.get_api_name().lower() == Constants.ACCOUNTS and not (
                         field.get_custom_field() and not field.get_custom_field()):
                     field_detail[Constants.SKIP_MANDATORY] = True
@@ -779,7 +782,7 @@ class Utility(object):
 
         field_api_names_long = ['long', 'bigint']
 
-        field_api_names_double = ['double', 'percent', 'lookup', 'currency']
+        field_api_names_double = ['double', 'percent', 'currency']
 
         field_api_names_field_file = ['fileupload']
 

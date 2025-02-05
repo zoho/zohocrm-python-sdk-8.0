@@ -524,6 +524,8 @@ class Constants(object):
 
     MULTI_USER_LOOKUP = "multiuserlookup"
 
+    MULTI_MODULE_LOOKUP = "multi_module_lookup"
+
     TERRITORIES = "territories"
 
     GENERATED_TYPE = "generated_type"
