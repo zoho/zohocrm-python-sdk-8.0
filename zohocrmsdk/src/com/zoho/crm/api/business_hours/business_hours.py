@@ -17,6 +17,7 @@ class BusinessHours(object):
 		self.__same_as_everyday = None
 		self.__daily_timing = None
 		self.__custom_timing = None
+		self.__timezone = None
 		self.__key_modified = dict()
 
 	def get_week_starts_on(self):
@@ -186,6 +187,27 @@ class BusinessHours(object):
 		
 		self.__custom_timing = custom_timing
 		self.__key_modified['custom_timing'] = 1
+
+	def get_timezone(self):
+		"""
+		The method to get the timezone
+
+		Returns:
+			string: A string representing the timezone
+		"""
+
+		return self.__timezone
+
+	def set_timezone(self, timezone):
+		"""
+		The method to set the value to timezone
+
+		Parameters:
+			timezone (string) : A string representing the timezone
+		"""
+
+		self.__timezone = timezone
+		self.__key_modified['timezone'] = 1
 
 	def is_key_modified(self, key):
 		"""
