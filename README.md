@@ -24,6 +24,9 @@ License
     limitations under the License.
 
 ## Latest Version
+- [3.0.0](/versions/3.0.0/README.md)
+  - ***trigger*** field has been added to the Notes API.
+  - Improved Multi-User Initialization Handling in Initializer Class.
 
 - [2.0.0](/versions/2.0.0/README.md)
     - New fields have been added to the History Tracking Fields API. 
@@ -48,7 +51,7 @@ For older versions, please [refer](https://github.com/zoho/zohocrm-python-sdk-8.
 ## Including the SDK in your project
 You can include the SDK to your project using:
 
-- For including the latest [version](https://github.com/zoho/zohocrm-python-sdk-8.0/releases/tag/2.0.0)
+- For including the latest [version](https://github.com/zoho/zohocrm-python-sdk-8.0/releases/tag/3.0.0)
 
     - Install **Python** from [python.org](https://www.python.org/downloads/) (if not installed).
 
@@ -75,4 +78,4 @@ For example, if you generate the tokens for your Sandbox environment in the CN d
 
 ---
 
-For more details, kindly refer [here](/versions/2.0.0/README.md).
+For more details, kindly refer [here](/versions/3.0.0/README.md).
