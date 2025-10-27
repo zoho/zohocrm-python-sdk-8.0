@@ -24,6 +24,11 @@ License
     limitations under the License.
 
 ## Latest Version
+
+- [4.0.0](/versions/4.0.0/README.md)
+  - Added `mysql-connector-python` as an optional dependency via `extras_require` in `setup.py`.
+  - Users who require MySQL support can now install it using `pip install zohocrmsdk8-0[mysql]`
+
 - [3.0.0](/versions/3.0.0/README.md)
   - ***trigger*** field has been added to the Notes API.
   - Improved Multi-User Initialization Handling in Initializer Class.
