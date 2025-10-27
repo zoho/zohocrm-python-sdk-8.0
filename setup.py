@@ -11,7 +11,7 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name='zohocrmsdk8_0',
-    version='3.0.0',
+    version='4.0.0',
     description='Zoho CRM SDK for ZOHO CRM v8 APIs',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -36,9 +36,11 @@ setup(
         'requests',
         'python-dateutil',
         'urllib3',
-        'mysql-connector-python',
         'setuptools'
     ],
+    extras_require={
+        'mysql': ['mysql-connector-python']
+    },
     keywords=['development', 'zoho', 'crm', 'api', 'zcrmsdk', 'zohocrmsdk' 'sdk', 'zcrm','zohocrmsdk8_0'],
     packages=find_packages(),
     include_package_data=True,
