@@ -31,7 +31,7 @@ class DownloadAttachment(object):
         destination_folder = "/users";
         """
         attachments_operations = AttachmentsOperations()
-        response = attachments_operations.get_attachment(attachment_id, record_id, module_api_name, )
+        response = attachments_operations.get_attachment(attachment_id, record_id, module_api_name)
         if response is not None:
             print('Status Code: ' + str(response.get_status_code()))
             if response.get_status_code() in [204, 304]:
