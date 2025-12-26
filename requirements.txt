@@ -1,4 +1,5 @@
 setuptools~=70.0.0
+sqlalchemy==2.0.45
 requests~=2.32.2
 urllib3~=2.5.0
 python-dateutil~=2.8.2
