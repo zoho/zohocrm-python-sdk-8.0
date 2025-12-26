@@ -178,6 +178,103 @@ DBStore takes the following parameters
 store = DBStore(host='host_name', database_name='database_name', user_name='user_name', password='password', port_number='port_number', table_name = "table_name")
 ```
 
+#### Multi-Database Persistence (MultiDBStore)
+
+For applications requiring database flexibility beyond MySQL, use `MultiDBStore` which supports **PostgreSQL, MySQL, SQLite, MariaDB, Oracle, SQL Server**, and more via SQLAlchemy.
+
+**Advantages over DBStore:**
+- ✅ **Multi-database support** - Works with any SQL database
+- ✅ **Enhanced security** - Protected against SQL injection attacks
+- ✅ **Better scalability** - UUID-based IDs (no race conditions)
+- ✅ **Production-ready** - Connection pooling, auto-reconnection, proper error handling
+- ✅ **Dynamic table names** - Perfect for multi-tenant applications
+
+**Installation:**
+```bash
+pip install sqlalchemy
+
+# Install database-specific driver
+pip install psycopg2-binary  # PostgreSQL
+pip install pymysql          # MySQL/MariaDB
+pip install cx_Oracle        # Oracle
+pip install pyodbc           # SQL Server
+```
+
+**Schema:** Same as DBStore (automatically created)
+```sql
+CREATE TABLE oauthtoken (
+  id VARCHAR(36) PRIMARY KEY,
+  user_name VARCHAR(255),
+  client_id VARCHAR(255),
+  client_secret VARCHAR(255),
+  refresh_token VARCHAR(255),
+  access_token VARCHAR(255),
+  grant_token VARCHAR(255),
+  expiry_time VARCHAR(20),
+  redirect_url VARCHAR(255),
+  api_domain VARCHAR(255)
+);
+```
+
+#### Create MultiDBStore object
+
+```python
+from zohocrmsdk.src.com.zoho.api.authenticator.store.multiple_database_support import MultiDBStore
+
+# PostgreSQL
+store = MultiDBStore(
+    database_driver='postgresql+psycopg2',
+    database_host='localhost',
+    database_name='zoho_crm',
+    database_user_name='postgres',
+    database_password='password',
+    database_port='5432'
+)
+
+# MySQL (drop-in replacement for DBStore)
+store = MultiDBStore(
+    database_driver='mysql+pymysql',
+    database_host='localhost',
+    database_name='zohooauth',
+    database_user_name='root',
+    database_password='password',
+    database_port='3306'
+)
+
+# SQLite (perfect for development/testing)
+store = MultiDBStore(
+    database_driver='sqlite',
+    database_host='',
+    database_name='zoho_tokens.db',
+    database_user_name='',
+    database_password=''
+)
+
+# Custom table name (multi-tenant support)
+store = MultiDBStore(
+    database_driver='postgresql+psycopg2',
+    database_host='localhost',
+    database_name='zoho_crm',
+    database_user_name='postgres',
+    database_password='password',
+    database_port='5432',
+    table_name='custom_tokens'  # Custom table name
+)
+```
+
+**Supported Databases:**
+
+| Database | Driver String | Package |
+|----------|--------------|---------|
+| PostgreSQL | `postgresql+psycopg2` | `psycopg2-binary` |
+| MySQL | `mysql+pymysql` | `pymysql` |
+| MariaDB | `mysql+pymysql` | `pymysql` |
+| SQLite | `sqlite` | Built-in |
+| Oracle | `oracle+cx_oracle` | `cx_Oracle` |
+| SQL Server | `mssql+pyodbc` | `pyodbc` |
+
+**Note:** MultiDBStore uses UUIDs for token IDs instead of auto-incrementing integers for better distributed system support and thread safety.
+
 ### File Persistence
 
 In case of File Persistence, the user can persist tokens in the local drive, by providing the absolute file path to the FileStore object.

@@ -783,3 +783,5 @@ class Constants(object):
     FUNCTIONS = "v8/functions"
     FUNCTIONS_PATH = "/actions/execute"
     MYSQL_IMPORT_ERROR = "MySQL support not installed. Please install with: pip install zohocrmsdk8-0[mysql]"
+
+    SQLALCHEMY_IMPORT_ERROR = "Sqlalchemy not installed. Please install: pip install sqlalchemy"
