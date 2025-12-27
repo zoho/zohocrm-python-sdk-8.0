@@ -25,6 +25,35 @@ License
 
 ## Latest Version
 
+- [5.0.0](/versions/5.0.0/README.md)
+ - Updated dependencies in `setup.py` and `requirements.txt` files.
+ - Handled SDK utils.
+ - Improved DB store query handling.
+ - Fixed an issue with the Blueprint update API response.
+ - Blueprint Field class `validationRule` field datatype changed (String to Object).
+ - BulkWrite `BodyWrapper` class `fileType` field datatype changed (Choice to String).
+ - BulkWrite `JobDetail` class `fileType` field datatype changed (Choice to String).
+ - BulkRead `Query` class `fileType` field datatype changed (Choice to String).
+ - Modules `GetModulesParam` class `STATUS` field datatype changed (Choice to String).
+ - Added new `trigger` field in Notes `BodyWrapper` class.
+ - Notifications class `deleteEvents` field datatype changed (Choice to String).
+ - Modules `DeleteNotificationParam` class `CHANNEL_IDS` field datatype changed (Long to String).
+ - Profiles and `MinifiedProfile` class `delete` field datatype changed (Boolean to `Delete` class).
+ - Added new `applyFeatureExecution`, `applyValidationRule`, `applyFunctionValidationRule`, and `skipFeatureExecution` fields in Record `BodyWrapper` class.
+ - Tags class `colorCode` field datatype changed (Choice to String).
+ - Users `CountWrapper` class `count` field datatype changed (Long to Integer).
+ - Users `GetUsersParam` class `TYPE` field datatype changed (Choice to String).
+ - Webforms `Abtesting` class `id` field datatype changed (Long to String).
+ - Webforms `AcknowledgeVisitor` class `templateId` field datatype changed (Long to String).
+ - Webforms `AssignmentRule` class `id` field datatype changed (Long to String).
+ - Webforms `Layout` class `id` field datatype changed (Long to String).
+ - Webforms `Module` class `id` field datatype changed (Long to String).
+ - Webforms `Owner` class `id` field datatype changed (Long to String).
+ - Webforms `Tags` class `id` field datatype changed (Long to String).
+ - Webforms `Users` class `id` field datatype changed (Long to String).
+ - Webforms `Users` `acknowledgeVisitor` field datatype changed (AcknowledgeVisitors to AcknowledgeVisitor).
+ - Removed `updateWebForms` method from the `WebformsOperations` class.
+
 - [4.0.0](/versions/4.0.0/README.md)
   - Added `mysql-connector-python` as an optional dependency via `extras_require` in `setup.py`.
   - Users who require MySQL support can now install it using `pip install zohocrmsdk8-0[mysql]`
@@ -56,7 +85,7 @@ For older versions, please [refer](https://github.com/zoho/zohocrm-python-sdk-8.
 ## Including the SDK in your project
 You can include the SDK to your project using:
 
-- For including the latest [version](https://github.com/zoho/zohocrm-python-sdk-8.0/releases/tag/3.0.0)
+- For including the latest [version](https://github.com/zoho/zohocrm-python-sdk-8.0/releases/tag/5.0.0)
 
     - Install **Python** from [python.org](https://www.python.org/downloads/) (if not installed).
 
@@ -83,4 +112,4 @@ For example, if you generate the tokens for your Sandbox environment in the CN d
 
 ---
 
-For more details, kindly refer [here](/versions/3.0.0/README.md).
+For more details, kindly refer [here](/versions/5.0.0/README.md).
