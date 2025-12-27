@@ -23,7 +23,7 @@ from .lookup_related_list import LookupRelatedList
 from .unique import Unique
 from .fields import Fields
 from .private import Private
-from .file_upolad_option import FileUpoladOption
+from .file_upload_option import FileUploadOption
 from .crypt import Crypt
 from .forecast_category import ForecastCategory
 from .linking_details import LinkingDetails
