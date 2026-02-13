@@ -1,11 +1,12 @@
 from zohocrmsdk.src.com.zoho.api.authenticator import OAuthToken
 from zohocrmsdk.src.com.zoho.crm.api import Initializer, ParameterMap
-from zohocrmsdk.src.com.zoho.crm.api.notifications import NotificationsOperations, DeleteNotificationParam
-from zohocrmsdk.src.com.zoho.crm.api.notifications import ActionWrapper, APIException, SuccessResponse
+from zohocrmsdk.src.com.zoho.crm.api.fields import FieldsOperations, CreateFieldParam
+from zohocrmsdk.src.com.zoho.crm.api.fields import BodyWrapper, Fields, PickListValue
+from zohocrmsdk.src.com.zoho.crm.api.fields import ActionWrapper, SuccessResponse, APIException
 from zohocrmsdk.src.com.zoho.crm.api.dc import INDataCenter
 
 
-class DeleteNotification:
+class CreateField:
     @staticmethod
     def initialize():
         environment = INDataCenter.PRODUCTION()
@@ -13,13 +14,31 @@ class DeleteNotification:
         Initializer.initialize(environment, token)
 
     @staticmethod
-    def delete_notification():
+    def create_field():
         try:
-            notifications_operations = NotificationsOperations()
+            fields_operations = FieldsOperations()
+            request = BodyWrapper()
+            fields_list = []
+            field = Fields()
+            field.set_api_name("Test_Custom_Field")
+            field.set_display_label("Test Custom Field")
+            field.set_data_type("picklist")
+            field.set_length(255)
+            pick_list_values = []
+            pick_list_value1 = PickListValue()
+            pick_list_value1.set_display_value("Option 1")
+            pick_list_value1.set_actual_value("option1")
+            pick_list_values.append(pick_list_value1)
+            pick_list_value2 = PickListValue()
+            pick_list_value2.set_display_value("Option 2")
+            pick_list_value2.set_actual_value("option2")
+            pick_list_values.append(pick_list_value2)
+            field.set_pick_list_values(pick_list_values)
+            fields_list.append(field)
+            request.set_fields(fields_list)
             param_instance = ParameterMap()
-            channel_ids = [1000000068002, 1000000068020, 1000000068101]
-            param_instance.add(DeleteNotificationParam.channel_ids, ",".join(map(str, channel_ids)))
-            response = notifications_operations.delete_notification(param_instance)
+            param_instance.add(CreateFieldParam.module, "Leads")
+            response = fields_operations.create_field(request, param_instance)
             if response is not None:
                 print('Status Code: ' + str(response.get_status_code()))
                 if response.get_status_code() in [204, 304]:
@@ -28,23 +47,25 @@ class DeleteNotification:
                 response_object = response.get_object()
                 if response_object is not None:
                     if isinstance(response_object, ActionWrapper):
-                        action_response_list = response_object.get_watch()
+                        action_response_list = response_object.get_fields()
                         for action_response in action_response_list:
                             if isinstance(action_response, SuccessResponse):
                                 print("Status: " + action_response.get_status().get_value())
                                 print("Code: " + action_response.get_code().get_value())
                                 print("Details")
                                 details = action_response.get_details()
-                                for key, value in details.items():
-                                    print(key + ' : ' + str(value))
-                                print("Message: " + action_response.get_message().get_value())
+                                if details is not None:
+                                    for key, value in details.items():
+                                        print(key + " : " + str(value))
+                                print("Message: " + action_response.get_message())
                             elif isinstance(action_response, APIException):
                                 print("Status: " + action_response.get_status().get_value())
                                 print("Code: " + action_response.get_code().get_value())
                                 print("Details")
                                 details = action_response.get_details()
-                                for key, value in details.items():
-                                    print(key + ' : ' + str(value))
+                                if details is not None:
+                                    for key, value in details.items():
+                                        print(key + " : " + str(value))
                                 print("Message: " + action_response.get_message())
                     elif isinstance(response_object, APIException):
                         print("Status: " + response_object.get_status().get_value())
@@ -55,8 +76,8 @@ class DeleteNotification:
                             print(key + ' : ' + str(value))
                         print("Message: " + response_object.get_message())
         except Exception as e:
-            print("Exception when calling delete_notification: " + str(e))
+            print("Exception when calling create_field: " + str(e))
 
 
-DeleteNotification.initialize()
-DeleteNotification.delete_notification()
+CreateField.initialize()
+CreateField.create_field()

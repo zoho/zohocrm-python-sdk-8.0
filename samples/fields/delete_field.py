@@ -1,11 +1,11 @@
 from zohocrmsdk.src.com.zoho.api.authenticator import OAuthToken
 from zohocrmsdk.src.com.zoho.crm.api import Initializer, ParameterMap
-from zohocrmsdk.src.com.zoho.crm.api.notifications import NotificationsOperations, DeleteNotificationParam
-from zohocrmsdk.src.com.zoho.crm.api.notifications import ActionWrapper, APIException, SuccessResponse
+from zohocrmsdk.src.com.zoho.crm.api.fields import FieldsOperations, DeleteFieldParam
+from zohocrmsdk.src.com.zoho.crm.api.fields import ActionWrapper, SuccessResponse, APIException
 from zohocrmsdk.src.com.zoho.crm.api.dc import INDataCenter
 
 
-class DeleteNotification:
+class DeleteField:
     @staticmethod
     def initialize():
         environment = INDataCenter.PRODUCTION()
@@ -13,13 +13,12 @@ class DeleteNotification:
         Initializer.initialize(environment, token)
 
     @staticmethod
-    def delete_notification():
+    def delete_field(field_id):
         try:
-            notifications_operations = NotificationsOperations()
+            fields_operations = FieldsOperations()
             param_instance = ParameterMap()
-            channel_ids = [1000000068002, 1000000068020, 1000000068101]
-            param_instance.add(DeleteNotificationParam.channel_ids, ",".join(map(str, channel_ids)))
-            response = notifications_operations.delete_notification(param_instance)
+            param_instance.add(DeleteFieldParam.module, "Leads")
+            response = fields_operations.delete_field(field_id, param_instance)
             if response is not None:
                 print('Status Code: ' + str(response.get_status_code()))
                 if response.get_status_code() in [204, 304]:
@@ -28,23 +27,25 @@ class DeleteNotification:
                 response_object = response.get_object()
                 if response_object is not None:
                     if isinstance(response_object, ActionWrapper):
-                        action_response_list = response_object.get_watch()
+                        action_response_list = response_object.get_fields()
                         for action_response in action_response_list:
                             if isinstance(action_response, SuccessResponse):
                                 print("Status: " + action_response.get_status().get_value())
                                 print("Code: " + action_response.get_code().get_value())
                                 print("Details")
                                 details = action_response.get_details()
-                                for key, value in details.items():
-                                    print(key + ' : ' + str(value))
-                                print("Message: " + action_response.get_message().get_value())
+                                if details is not None:
+                                    for key, value in details.items():
+                                        print(key + " : " + str(value))
+                                print("Message: " + action_response.get_message())
                             elif isinstance(action_response, APIException):
                                 print("Status: " + action_response.get_status().get_value())
                                 print("Code: " + action_response.get_code().get_value())
                                 print("Details")
                                 details = action_response.get_details()
-                                for key, value in details.items():
-                                    print(key + ' : ' + str(value))
+                                if details is not None:
+                                    for key, value in details.items():
+                                        print(key + " : " + str(value))
                                 print("Message: " + action_response.get_message())
                     elif isinstance(response_object, APIException):
                         print("Status: " + response_object.get_status().get_value())
@@ -55,8 +56,8 @@ class DeleteNotification:
                             print(key + ' : ' + str(value))
                         print("Message: " + response_object.get_message())
         except Exception as e:
-            print("Exception when calling delete_notification: " + str(e))
+            print("Exception when calling delete_field: " + str(e))
 
 
-DeleteNotification.initialize()
-DeleteNotification.delete_notification()
+DeleteField.initialize()
+DeleteField.delete_field(123456789)

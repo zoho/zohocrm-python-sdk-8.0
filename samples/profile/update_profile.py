@@ -1,11 +1,11 @@
 from zohocrmsdk.src.com.zoho.api.authenticator import OAuthToken
-from zohocrmsdk.src.com.zoho.crm.api import Initializer, ParameterMap
-from zohocrmsdk.src.com.zoho.crm.api.notifications import NotificationsOperations, DeleteNotificationParam
-from zohocrmsdk.src.com.zoho.crm.api.notifications import ActionWrapper, APIException, SuccessResponse
+from zohocrmsdk.src.com.zoho.crm.api import Initializer
+from zohocrmsdk.src.com.zoho.crm.api.profiles import ProfilesOperations, BodyWrapper, Profile
+from zohocrmsdk.src.com.zoho.crm.api.profiles import ActionWrapper, APIException, SuccessResponse
 from zohocrmsdk.src.com.zoho.crm.api.dc import INDataCenter
 
 
-class DeleteNotification:
+class UpdateProfile:
     @staticmethod
     def initialize():
         environment = INDataCenter.PRODUCTION()
@@ -13,13 +13,20 @@ class DeleteNotification:
         Initializer.initialize(environment, token)
 
     @staticmethod
-    def delete_notification():
+    def update_profile(profile_id):
         try:
-            notifications_operations = NotificationsOperations()
-            param_instance = ParameterMap()
-            channel_ids = [1000000068002, 1000000068020, 1000000068101]
-            param_instance.add(DeleteNotificationParam.channel_ids, ",".join(map(str, channel_ids)))
-            response = notifications_operations.delete_notification(param_instance)
+            profiles_operations = ProfilesOperations()
+            request = BodyWrapper()
+            profiles_list = []
+            
+            profile = Profile()
+            profile.set_name("Updated Profile Name")
+            profile.set_description("Updated profile description")
+            profiles_list.append(profile)
+            
+            request.set_profiles(profiles_list)
+            
+            response = profiles_operations.update_profile(profile_id, request)
             if response is not None:
                 print('Status Code: ' + str(response.get_status_code()))
                 if response.get_status_code() in [204, 304]:
@@ -28,7 +35,7 @@ class DeleteNotification:
                 response_object = response.get_object()
                 if response_object is not None:
                     if isinstance(response_object, ActionWrapper):
-                        action_response_list = response_object.get_watch()
+                        action_response_list = response_object.get_profiles()
                         for action_response in action_response_list:
                             if isinstance(action_response, SuccessResponse):
                                 print("Status: " + action_response.get_status().get_value())
@@ -45,7 +52,7 @@ class DeleteNotification:
                                 details = action_response.get_details()
                                 for key, value in details.items():
                                     print(key + ' : ' + str(value))
-                                print("Message: " + action_response.get_message())
+                                print("Message: " + action_response.get_message().get_value())
                     elif isinstance(response_object, APIException):
                         print("Status: " + response_object.get_status().get_value())
                         print("Code: " + response_object.get_code().get_value())
@@ -53,10 +60,10 @@ class DeleteNotification:
                         details = response_object.get_details()
                         for key, value in details.items():
                             print(key + ' : ' + str(value))
-                        print("Message: " + response_object.get_message())
+                        print("Message: " + response_object.get_message().get_value())
         except Exception as e:
-            print("Exception when calling delete_notification: " + str(e))
+            print("Exception when calling update_profile: " + str(e))
 
 
-DeleteNotification.initialize()
-DeleteNotification.delete_notification()
+UpdateProfile.initialize()
+UpdateProfile.update_profile(1055806000000026011)

@@ -1,11 +1,11 @@
 from zohocrmsdk.src.com.zoho.api.authenticator import OAuthToken
 from zohocrmsdk.src.com.zoho.crm.api import Initializer, ParameterMap
-from zohocrmsdk.src.com.zoho.crm.api.notifications import NotificationsOperations, DeleteNotificationParam
-from zohocrmsdk.src.com.zoho.crm.api.notifications import ActionWrapper, APIException, SuccessResponse
+from zohocrmsdk.src.com.zoho.crm.api.layouts import LayoutsOperations, ActivateCustomLayoutParam, BodyWrapper, Layout
+from zohocrmsdk.src.com.zoho.crm.api.layouts import ActionWrapper, APIException
 from zohocrmsdk.src.com.zoho.crm.api.dc import INDataCenter
 
 
-class DeleteNotification:
+class ActivateCustomLayout:
     @staticmethod
     def initialize():
         environment = INDataCenter.PRODUCTION()
@@ -13,13 +13,19 @@ class DeleteNotification:
         Initializer.initialize(environment, token)
 
     @staticmethod
-    def delete_notification():
+    def activate_custom_layout(layout_id):
         try:
-            notifications_operations = NotificationsOperations()
+            layouts_operations = LayoutsOperations()
+            request = BodyWrapper()
+            layouts_list = []
+            layout = Layout()
+            layouts_list.append(layout)
+            request.set_layouts(layouts_list)
+            
             param_instance = ParameterMap()
-            channel_ids = [1000000068002, 1000000068020, 1000000068101]
-            param_instance.add(DeleteNotificationParam.channel_ids, ",".join(map(str, channel_ids)))
-            response = notifications_operations.delete_notification(param_instance)
+            param_instance.add(ActivateCustomLayoutParam.module, "Leads")
+            
+            response = layouts_operations.activate_custom_layout(layout_id, request, param_instance)
             if response is not None:
                 print('Status Code: ' + str(response.get_status_code()))
                 if response.get_status_code() in [204, 304]:
@@ -28,17 +34,9 @@ class DeleteNotification:
                 response_object = response.get_object()
                 if response_object is not None:
                     if isinstance(response_object, ActionWrapper):
-                        action_response_list = response_object.get_watch()
+                        action_response_list = response_object.get_layouts()
                         for action_response in action_response_list:
-                            if isinstance(action_response, SuccessResponse):
-                                print("Status: " + action_response.get_status().get_value())
-                                print("Code: " + action_response.get_code().get_value())
-                                print("Details")
-                                details = action_response.get_details()
-                                for key, value in details.items():
-                                    print(key + ' : ' + str(value))
-                                print("Message: " + action_response.get_message().get_value())
-                            elif isinstance(action_response, APIException):
+                            if hasattr(action_response, 'get_status'):
                                 print("Status: " + action_response.get_status().get_value())
                                 print("Code: " + action_response.get_code().get_value())
                                 print("Details")
@@ -53,10 +51,10 @@ class DeleteNotification:
                         details = response_object.get_details()
                         for key, value in details.items():
                             print(key + ' : ' + str(value))
-                        print("Message: " + response_object.get_message())
+                        print("Message: " + response_object.get_message().get_value())
         except Exception as e:
-            print("Exception when calling delete_notification: " + str(e))
+            print("Exception when calling activate_custom_layout: " + str(e))
 
 
-DeleteNotification.initialize()
-DeleteNotification.delete_notification()
+ActivateCustomLayout.initialize()
+ActivateCustomLayout.activate_custom_layout(1055806000000091055)

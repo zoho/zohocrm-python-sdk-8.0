@@ -1,34 +1,52 @@
 from zohocrmsdk.src.com.zoho.api.authenticator import OAuthToken
-from zohocrmsdk.src.com.zoho.crm.api import Initializer, ParameterMap
-from zohocrmsdk.src.com.zoho.crm.api.notifications import NotificationsOperations, DeleteNotificationParam
-from zohocrmsdk.src.com.zoho.crm.api.notifications import ActionWrapper, APIException, SuccessResponse
-from zohocrmsdk.src.com.zoho.crm.api.dc import INDataCenter
+from zohocrmsdk.src.com.zoho.crm.api import Initializer
+from zohocrmsdk.src.com.zoho.crm.api.dc import USDataCenter
+from zohocrmsdk.src.com.zoho.crm.api.roles import RolesOperations, BodyWrapper, Role, ActionWrapper, SuccessResponse, APIException
+from zohocrmsdk.src.com.zoho.crm.api.users import MinifiedUser
 
 
-class DeleteNotification:
+class UpdateRole:
     @staticmethod
     def initialize():
-        environment = INDataCenter.PRODUCTION()
+        environment = USDataCenter.PRODUCTION()
         token = OAuthToken(client_id="client_id", client_secret="client_secret", grant_token="grant_token")
         Initializer.initialize(environment, token)
 
     @staticmethod
-    def delete_notification():
+    def update_role(role_id):
+        """
+        This method is used to update a single role with ID and print the response.
+        :param role_id: The ID of the role to be updated
+        """
         try:
-            notifications_operations = NotificationsOperations()
-            param_instance = ParameterMap()
-            channel_ids = [1000000068002, 1000000068020, 1000000068101]
-            param_instance.add(DeleteNotificationParam.channel_ids, ",".join(map(str, channel_ids)))
-            response = notifications_operations.delete_notification(param_instance)
+            roles_operations = RolesOperations()
+            request = BodyWrapper()
+            roles_list = []
+
+            role = Role()
+            role.set_name("Updated Single Role Name")
+            role.set_display_label("Updated Single Role Display Label")
+            role.set_description("Updated single role description")
+            role.set_share_with_peers(True)
+
+            reporting_to = MinifiedUser()
+            reporting_to.set_id(440248001431017)
+            role.set_reporting_to(reporting_to)
+
+            roles_list.append(role)
+            request.set_roles(roles_list)
+
+            response = roles_operations.update_role(role_id, request)
+
             if response is not None:
                 print('Status Code: ' + str(response.get_status_code()))
-                if response.get_status_code() in [204, 304]:
-                    print('No Content' if response.get_status_code() == 204 else 'Not Modified')
-                    return
+
                 response_object = response.get_object()
+
                 if response_object is not None:
                     if isinstance(response_object, ActionWrapper):
-                        action_response_list = response_object.get_watch()
+                        action_response_list = response_object.get_roles()
+
                         for action_response in action_response_list:
                             if isinstance(action_response, SuccessResponse):
                                 print("Status: " + action_response.get_status().get_value())
@@ -37,7 +55,8 @@ class DeleteNotification:
                                 details = action_response.get_details()
                                 for key, value in details.items():
                                     print(key + ' : ' + str(value))
-                                print("Message: " + action_response.get_message().get_value())
+                                print("Message: " + action_response.get_message())
+
                             elif isinstance(action_response, APIException):
                                 print("Status: " + action_response.get_status().get_value())
                                 print("Code: " + action_response.get_code().get_value())
@@ -46,6 +65,7 @@ class DeleteNotification:
                                 for key, value in details.items():
                                     print(key + ' : ' + str(value))
                                 print("Message: " + action_response.get_message())
+
                     elif isinstance(response_object, APIException):
                         print("Status: " + response_object.get_status().get_value())
                         print("Code: " + response_object.get_code().get_value())
@@ -54,9 +74,10 @@ class DeleteNotification:
                         for key, value in details.items():
                             print(key + ' : ' + str(value))
                         print("Message: " + response_object.get_message())
+
         except Exception as e:
-            print("Exception when calling delete_notification: " + str(e))
+            print("Exception in update_role: " + str(e))
 
 
-DeleteNotification.initialize()
-DeleteNotification.delete_notification()
+UpdateRole.initialize()
+UpdateRole.update_role(44024801431002)
