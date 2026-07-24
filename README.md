@@ -24,7 +24,8 @@ License
     limitations under the License.
 
 ## Latest Version
-
+- [7.0.0](/versions/7.0.0/README.md)
+  - security hardening and bug fixes in token store layer.
 - [6.0.0](/versions/6.0.0/README.md)
   - Updated dependencies in `setup.py` and `requirements.txt` files.
 
@@ -88,7 +89,7 @@ For older versions, please [refer](https://github.com/zoho/zohocrm-python-sdk-8.
 ## Including the SDK in your project
 You can include the SDK to your project using:
 
-- For including the latest [version](https://github.com/zoho/zohocrm-python-sdk-8.0/releases/tag/6.0.0)
+- For including the latest [version](https://github.com/zoho/zohocrm-python-sdk-8.0/releases/tag/7.0.0)
 
     - Install **Python** from [python.org](https://www.python.org/downloads/) (if not installed).
 
@@ -115,4 +116,4 @@ For example, if you generate the tokens for your Sandbox environment in the CN d
 
 ---
 
-For more details, kindly refer [here](/versions/6.0.0/README.md).
+For more details, kindly refer [here](/versions/7.0.0/README.md).
