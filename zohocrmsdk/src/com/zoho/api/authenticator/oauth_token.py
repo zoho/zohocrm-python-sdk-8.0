@@ -437,7 +437,7 @@ class OAuthToken(Token):
         except Exception as ex:
             raise SDKException(code=Constants.SAVE_TOKEN_ERROR, cause=ex)
 
-        return self
+        return oauth_token # proposed fix
 
     def parse_response(self, oauth_token, response):
         initializer = Initializer.get_initializer()
